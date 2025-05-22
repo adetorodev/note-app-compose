@@ -27,16 +27,13 @@ import com.ezadetoro.noteapp.viewmodel.NoteViewModel
 @Composable
 fun HomeScreen(navController: NavHostController, modifier: Modifier = Modifier) {
     val viewModel: NoteViewModel = hiltViewModel()
-    val notesList = viewModel.notes
+    val notesList = viewModel.allNotes
 
     Column(modifier = modifier.padding(12.dp)) {
         NoteTopAppBar {
             navController.navigate("add_note")
         }
 
-        if (notesList.isEmpty()) {
-            Text("No notes available")
-        } else {
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Adaptive(200.dp),
                 verticalItemSpacing = 4.dp,
@@ -44,11 +41,19 @@ fun HomeScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                 modifier = Modifier.fillMaxSize(),
                 content = {
                     items(notesList) { note ->
-                        Text("${note.title}: ${note.noteContent}")
+                        NoteCard(
+                            noteTitle = note.title,
+                            noteBody = note.noteContent,
+                            deleteButtonClicked = {
+                                viewModel.deleteNote(note.id)
+                            },
+                            editButtonClicked = {
+                                navController.navigate("edit_note/${note.id}")
+                            }
+                        )
                     }
                 }
             )
-        }
     }
 }
 

@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezadetoro.noteapp.Data.Note
@@ -23,26 +24,11 @@ class NoteViewModel @Inject constructor(
     private val repository: NoteRepository
 ) : ViewModel() {
 
-    var notes: List<NoteEntity> by mutableStateOf(emptyList())
-        private set
+    var allNotes: Flow<List<NoteEntity>> = repository.getNotes()
 
-    init {
-        viewModelScope.launch {
-            repository.getNotes().collectLatest { notesList ->
-                notes = notesList
-                Log.d("ViewModel", "Received ${notesList.size} notes")
-            }
-        }
-    }
 
-    fun addNote(title: String, content: String) {
+    fun addNote(note: NoteEntity) {
         viewModelScope.launch {
-            val now = LocalDate.now()
-            val note = NoteEntity(
-                title = title,
-                noteContent = content,
-                createAt = now
-            )
             repository.addNote(note)
         }
     }
@@ -62,9 +48,9 @@ class NoteViewModel @Inject constructor(
     fun onSearch(query: String) {
         // Make sure this returns a flow and updates `notes` just like loadNotes()
         viewModelScope.launch {
-            repository.searchNote(query).collectLatest {
-                notes = it
-            }
+//            repository.searchNote(query).collectLatest {
+//                notes = it
+//            }
         }
     }
 }
