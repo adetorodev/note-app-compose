@@ -3,19 +3,29 @@ package com.ezadetoro.noteapp.Data
 import androidx.room.TypeConverter
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Date
 
 class Converter {
+
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
 
-    // Converts a string from the database to a LocalDate.
     @TypeConverter
-    fun fromString(value: String?): LocalDate? {
-        return value?.let { LocalDate.parse(it, formatter) }
+    fun fromLocalDate(date: LocalDate): String {
+        return date.format(formatter)
     }
 
-    // Converts a LocalDate to a string for the database
     @TypeConverter
-    fun dateToString(date: LocalDate?): String? {
-        return date?.format(formatter)
+    fun toLocalDate(dateString: String): LocalDate {
+        return LocalDate.parse(dateString, formatter)
+    }
+
+    @TypeConverter
+    fun fromDate(date: Date?): Long? {
+        return date?.time
+    }
+
+    @TypeConverter
+    fun toDate(timestamp: Long?): Date? {
+        return timestamp?.let { Date(it) }
     }
 }

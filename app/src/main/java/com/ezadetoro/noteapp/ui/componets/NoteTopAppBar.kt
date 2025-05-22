@@ -14,7 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 
 @Composable
-fun NoteTopAppBar() {
+fun NoteTopAppBar(
+    addNoteNav: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -24,7 +26,7 @@ fun NoteTopAppBar() {
         Text(text = "Note App",
             style = MaterialTheme.typography.titleLarge
         )
-        Button(onClick = {/*TODO*/}) {
+        Button(onClick = addNoteNav ) {
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add Note")
         }
     }

@@ -1,6 +1,7 @@
 package com.ezadetoro.noteapp.ui.componets
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,7 +33,9 @@ import androidx.compose.ui.unit.dp
 fun NoteCard(
     modifier: Modifier = Modifier,
     noteTitle: String,
-    noteBody: String
+    noteBody: String,
+    editButtonClicked: () -> Unit,
+    deleteButtonClicked: () -> Unit,
 
 ) {
     Card(
@@ -54,11 +57,25 @@ fun NoteCard(
                     text=noteTitle,
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                     )
+
                 Spacer(modifier = Modifier.weight(1f))
-                Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Note")
+
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Edit Note",
+                    modifier = Modifier.clickable(onClick = editButtonClicked)
+                )
+
                 Spacer(modifier = Modifier.width(5.dp))
-                Icon(imageVector = Icons.Default.Delete, contentDescription = "Edit Note")
+
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete note",
+                    modifier = Modifier.clickable(onClick = deleteButtonClicked)
+                    )
+
             }
+
             Text(
                 text = noteBody,
                 style = MaterialTheme.typography.bodyMedium,
@@ -76,7 +93,9 @@ fun NoteCard(
 fun NoteCardPreview(modifier: Modifier = Modifier) {
     NoteCard(
         noteTitle = "This is a title",
-        noteBody = " This is a new note coverrigngn the basic ov compose"
+        noteBody = " This is a new note coverrigngn the basic ov compose",
+        deleteButtonClicked = {},
+        editButtonClicked = {}
     )
     
 }

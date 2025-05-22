@@ -16,8 +16,16 @@ class NoteRepositoryImpl @Inject constructor(private val noteDao: NoteDao): Note
         noteDao.insertNote(note)
     }
 
-    override suspend fun deleteNote(note: NoteEntity){
-        noteDao.deleteNote(note)
+    override suspend fun update(note: NoteEntity) {
+        noteDao.updateNote(note)
+    }
+
+    override suspend fun noteDetail(id: Int) {
+        noteDao.noteDetail(id)
+    }
+
+    override suspend fun deleteNote(id: Int){
+        noteDao.deleteNote(id)
     }
 
     override suspend fun clearNote() {
